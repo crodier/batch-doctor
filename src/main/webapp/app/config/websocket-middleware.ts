@@ -92,7 +92,9 @@ const unsubscribe = () => {
 export default store => next => action => {
   if (getAccount.fulfilled.match(action)) {
     connect();
-    const isAdmin = action.payload.data.authorities.includes('ROLE_ADMIN');
+    const isAdmin = action.payload?.data?.authorities?.includes('ROLE_ADMIN') ?? false;
+
+    // const isAdmin = action.payload.data.authorities.includes('ROLE_ADMIN');
     if (!alreadyConnectedOnce && isAdmin) {
       subscribe();
       receive().subscribe(activity => {
