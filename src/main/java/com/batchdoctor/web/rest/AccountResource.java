@@ -8,10 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,18 +46,6 @@ public class AccountResource {
         }
     }
 
-    /**
-     * {@code GET  /authenticate} : check if the user is authenticated, and return its login.
-     *
-     * @param principal the authentication principal.
-     * @return the login if the user is authenticated.
-     */
-    @GetMapping(value = "/authenticate", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String isAuthenticated(Principal principal) {
-        LOG.debug("REST request to check if the current user is authenticated");
-        return principal == null ? null : principal.getName();
-    }
-
     private static class UserVM {
 
         private String login;
@@ -94,8 +80,6 @@ public class AccountResource {
         Map<String, Object> attributes;
         if (authToken instanceof JwtAuthenticationToken) {
             attributes = ((JwtAuthenticationToken) authToken).getTokenAttributes();
-        } else if (authToken instanceof OAuth2AuthenticationToken) {
-            attributes = ((OAuth2AuthenticationToken) authToken).getPrincipal().getAttributes();
         } else {
             throw new IllegalArgumentException("AuthenticationToken is not OAuth2 or JWT!");
         }

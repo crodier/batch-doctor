@@ -7,9 +7,6 @@ import { NavDropdown } from './menu-components';
 
 const adminMenuItems = () => (
   <>
-    <MenuItem icon="eye" to="/admin/tracker">
-      <Translate contentKey="global.menu.admin.tracker">User tracker</Translate>
-    </MenuItem>
     <MenuItem icon="tachometer-alt" to="/admin/metrics">
       <Translate contentKey="global.menu.admin.metrics">Metrics</Translate>
     </MenuItem>

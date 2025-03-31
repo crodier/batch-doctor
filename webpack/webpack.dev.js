@@ -52,15 +52,10 @@ module.exports = async options =>
       port: 9060,
       proxy: [
         {
-          context: ['/api', '/services', '/management', '/v3/api-docs', '/h2-console', '/auth', '/oauth2', '/login'],
+          context: ['/api', '/services', '/management', '/v3/api-docs', '/h2-console'],
           target: `http${options.tls ? 's' : ''}://localhost:8080`,
           secure: false,
           changeOrigin: options.tls,
-        },
-        {
-          context: ['/websocket'],
-          target: 'ws://127.0.0.1:8080',
-          ws: true,
         },
       ],
       historyApiFallback: true,

@@ -1,4 +1,3 @@
 org.springframework.test.context.ContextCustomizerFactory = \
     com.batchdoctor.config.SqlTestContainersSpringContextCustomizerFactory,com.\
-    batchdoctor.config.TestContainersSpringContextCustomizerFactory,com.\
-    batchdoctor.config.KafkaTestContainersSpringContextCustomizerFactory
+    batchdoctor.config.TestContainersSpringContextCustomizerFactory

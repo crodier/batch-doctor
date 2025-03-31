@@ -46,6 +46,7 @@ describe('AccountMenu', () => {
   it('Renders a guest AccountMenu component', () => {
     const html = guestWrapper();
 
+    expect(html).toContain('/login');
     expect(html).not.toContain('/logout');
   });
 });

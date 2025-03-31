@@ -16,25 +16,6 @@
 spring:
   application:
     name: batchDoctor
-  cloud:
-    function:
-      definition: kafkaConsumer;kafkaProducer
-    stream:
-      kafka:
-        binder:
-          replicationFactor: 1
-          auto-create-topics: true
-      bindings:
-        binding-out-0:
-          content-type: text/plain
-          group: batch-doctor
-        kafkaConsumer-in-0:
-          destination: sse-topic
-          content-type: text/plain
-          group: batch-doctor
-        kafkaProducer-out-0:
-          content-type: text/plain
-          group: batch-doctor
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: test
@@ -48,14 +29,16 @@ spring:
   messages:
     basename: i18n/messages
   security:
+    user:
+      name: test
+      password: test
+      roles:
+        - USER
     oauth2:
-      client:
-        provider:
-          oidc:
-            issuer-uri: http://DO_NOT_CALL:9080/realms/jhipster
       resourceserver:
         jwt:
-          principal-claim-name: preferred_username
+          authority-prefix: ''
+          authorities-claim-name: auth
   task:
     execution:
       thread-name-prefix: batch-doctor-task-
@@ -93,6 +76,14 @@ jhipster:
       host: localhost
       port: 5000
       ring-buffer-size: 512
+  security:
+    authentication:
+      jwt:
+        # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
+        base64-secret: YzM0ZDE0YTlhM2QzMjBmZDI4MjIyZjRkOGUzNWYwZDU1NzRhY2FmYTQ0MDA4NGJkZGM1MGVlM2IwNTk4NjNiMDczMGVmMjgzNzExNWUxZTZiN2RmMjE0NTVhNTM5NTE3MGQzOWVmNGFkZjY3NTMwNDU3NzU3YmQxZmUyYzVjMGM=
+        # Token is valid 24 hours
+        token-validity-in-seconds: 86400
+        token-validity-in-seconds-for-remember-me: 86400
 
 # ===================================================================
 # Application specific properties

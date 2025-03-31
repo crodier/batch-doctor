@@ -1,7 +1,6 @@
 {
   "generator-jhipster": {
     "applicationType": "monolith",
-    "authenticationType": "oauth2",
     "baseName": "batchDoctor",
     "blueprints": [],
     "buildTool": "maven",
@@ -12,7 +11,7 @@
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
     "enableHibernateCache": true,
-    "enableSwaggerCodegen": "true",
+    "enableSwaggerCodegen": true,
     "enableTranslation": true,
     "entities": [
       "HolidayCalendar",
@@ -25,27 +24,18 @@
       "Region",
       "Country"
     ],
-    "gitCompany": "",
-    "iaCTools": ["bicep", "terraform"],
     "jhiPrefix": "jhi",
     "jhipsterVersion": "8.9.0",
+    "jwtSecretKey": "YzM0ZDE0YTlhM2QzMjBmZDI4MjIyZjRkOGUzNWYwZDU1NzRhY2FmYTQ0MDA4NGJkZGM1MGVlM2IwNTk4NjNiMDczMGVmMjgzNzExNWUxZTZiN2RmMjE0NTVhNTM5NTE3MGQzOWVmNGFkZjY3NTMwNDU3NzU3YmQxZmUyYzVjMGM=",
     "languages": ["en"],
-    "lastLiquibaseTimestamp": 1743453488000,
-    "messageBroker": "kafka",
     "nativeLanguage": "en",
-    "packageFolder": "com/batchdoctor",
     "packageName": "com.batchdoctor",
     "prodDatabaseType": "postgresql",
     "searchEngine": "elasticsearch",
-    "serverPort": 8080,
+    "serverPort": "8080",
     "serviceDiscoveryType": false,
     "skipUserManagement": true,
     "testFrameworks": [],
-    "useSass": true,
-    "websocket": "spring-websocket",
     "withAdminUi": true
-  },
-  "git-company": "crodier",
-  "git-provider": "GitHub",
-  "repository-name": "batch-doctor"
+  }
 }

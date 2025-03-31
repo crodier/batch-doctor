@@ -1,2 +1,2 @@
-jhipster import-jdl jhipster-jdl.jdl
+jhipster import-jdl batchDoctor.jdl
 

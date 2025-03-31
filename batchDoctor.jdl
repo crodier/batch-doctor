@@ -1,0 +1,203 @@
+application {
+  config {
+    applicationType monolith
+//    authenticationType oauth2
+    baseName batchDoctor
+    blueprints []
+    buildTool maven
+    cacheProvider ehcache
+    clientFramework react
+    clientPackageManager npm
+    creationTimestamp 1743377154585
+    databaseType sql
+    devDatabaseType h2Disk
+    enableHibernateCache true
+    enableSwaggerCodegen true
+    enableTranslation true
+    jhiPrefix jhi
+    jhipsterVersion "8.9.0"
+    languages [en]
+    nativeLanguage en
+    packageName com.batchdoctor
+    prodDatabaseType postgresql
+    searchEngine elasticsearch
+    serverPort 8080
+    serviceDiscoveryType false
+    skipUserManagement true
+    testFrameworks []
+//    websocket spring-websocket
+    withAdminUi true
+  }
+
+  entities Agent, AgentGroup, Country, HolidayCalendar, JobDefinition, JobExecution, JobFrequency, JobSchedule, Region
+}
+
+@ChangelogDate("20250331203804")
+entity Agent {
+  agentName String
+  agentDescription String
+  agentId String
+  hostName String
+  ipAddress String
+  port Integer
+  areCredentialsRequired Boolean
+  privateKey String
+  username String
+  passwordEncrypted String
+  heartbeatInterval Integer
+  heartbeatGracePeriod Integer
+  isNumberOfConcurrentTasksLimited Boolean
+  numberOfConcurrentTasksLimit Long
+  agentType AgentTypeEnum
+  agentStatus AgentStatusEnum
+  agentSuspended Boolean
+  showLogsProhibited Boolean
+  agentVersion String
+  agentBuildId String
+  agentBuildDate String
+  agentCpu String
+  operatingSystemRelease String
+  operatingSystem String
+  agentStartTime Instant
+  agentProcessId Long
+  lastHeartbeatSuccess Instant
+  lastHeartbeatMissed Instant
+  numberOfJobsEverRun Long
+  numberOfJobsRunning Long
+  businessUnit String
+}
+@ChangelogDate("20250331203803")
+entity AgentGroup {
+  name String
+}
+@ChangelogDate("20250331203808")
+entity Country {
+  countryName String
+}
+@ChangelogDate("20250331203800")
+entity HolidayCalendar {
+  name String
+  description String
+  vendorId Long
+  vendorSubId Long
+}
+@ChangelogDate("20250331203805")
+entity JobDefinition {
+  jobName String
+  jobDescription String
+  jobType JobTypeEnum
+  timeZonePreference String
+  atMostOnce Boolean
+  documentationUrl String
+  ticketUrl String
+  ticketNumber String
+  transferProtocol TransferProtocolEnum
+  remoteHost String
+  remotePort Integer
+  remotePath String
+  localPath String
+  localUsername String
+  localPassword String
+  localCloudUser String
+  localCloudCredential String
+  maxRetries Integer
+  retryIntervalSeconds Integer
+}
+@ChangelogDate("20250331203806")
+entity JobExecution {
+  jobExecutionStatus JobExecutionStatus
+  jobExecutionStatusUpdateTime Instant
+  startTime Instant
+  endTime Instant
+  updatedTime Instant
+  logS3OutputPath String
+  logS3ErrorFilePath String
+  alternateS3OutputPath String
+}
+@ChangelogDate("20250331203801")
+entity JobFrequency {
+  name String
+  description String
+  jobFrequencyEnum JobFrequencyEnum
+}
+@ChangelogDate("20250331203802")
+entity JobSchedule {
+  name String
+  description String
+  startTime Instant
+  endTime Instant
+}
+@ChangelogDate("20250331203807")
+entity Region {
+  regionName String
+}
+
+enum AgentTypeEnum {
+  LINUX,
+  WINDOWS,
+  ZOS,
+  REMOTE_FILE_MONITOR,
+  TIMER
+}
+enum AgentStatusEnum {
+  NOT_REGISTERED,
+  REGISTERED,
+  CONNECTED,
+  DISCONNECTED,
+  BUSY
+}
+enum JobTypeEnum {
+  MANUAL,
+  AGENT_EXECUTION,
+  FTP,
+  DATA_COPY,
+  EMAIL,
+  SMS,
+  REST,
+  SOAP,
+  JDBC,
+  SSH
+}
+enum TransferProtocolEnum {
+  SCP,
+  SFTP,
+  FTP,
+  BATCH_DOCTOR,
+  S3
+}
+enum JobExecutionStatus {
+  QUEUED,
+  NOT_QUEUED,
+  READY,
+  STARTING,
+  RUNNING,
+  RUNNING_OVERTIME,
+  FAILED,
+  SUCCESS
+}
+enum JobFrequencyEnum {
+  ONCE,
+  MINUETLY,
+  HOURLY,
+  WEEKLY,
+  WEEKDAYS,
+  DAILY,
+  MONTHLY,
+  ANNUALLY
+}
+
+relationship OneToOne {
+  Country{region} to Region
+}
+relationship ManyToOne {
+  Agent{jobDefinition} to JobDefinition
+  AgentGroup{jobDefinition} to JobDefinition
+  HolidayCalendar{jobDefinition} to JobFrequency
+  JobDefinition{agentGroup} to AgentGroup
+  JobDefinition{agent} to Agent
+  JobExecution{jobDefinition} to JobDefinition
+  JobSchedule{jobFrequency} to JobFrequency
+}
+
+paginate Agent, JobDefinition, JobExecution with pagination
+service Agent, AgentGroup, Country, HolidayCalendar, JobDefinition, JobExecution, JobFrequency, JobSchedule, Region with serviceImpl

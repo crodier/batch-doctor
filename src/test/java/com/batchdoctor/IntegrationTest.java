@@ -2,10 +2,8 @@ package com.batchdoctor;
 
 import com.batchdoctor.config.AsyncSyncConfiguration;
 import com.batchdoctor.config.EmbeddedElasticsearch;
-import com.batchdoctor.config.EmbeddedKafka;
 import com.batchdoctor.config.EmbeddedSQL;
 import com.batchdoctor.config.JacksonConfiguration;
-import com.batchdoctor.config.TestSecurityConfiguration;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,11 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(
-    classes = { BatchDoctorApp.class, JacksonConfiguration.class, AsyncSyncConfiguration.class, TestSecurityConfiguration.class }
-)
+@SpringBootTest(classes = { BatchDoctorApp.class, JacksonConfiguration.class, AsyncSyncConfiguration.class })
 @EmbeddedElasticsearch
 @EmbeddedSQL
-@EmbeddedKafka
 public @interface IntegrationTest {
 }
