@@ -7,7 +7,16 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "holidayCalendar": "Holiday Calendar",
+        "jobFrequency": "Job Frequency",
+        "jobSchedule": "Job Schedule",
+        "agentGroup": "Agent Group",
+        "agent": "Agent",
+        "jobDefinition": "Job Definition",
+        "jobExecution": "Job Execution",
+        "region": "Region",
+        "country": "Country"
       },
       "account": {
         "main": "Account",

@@ -1,0 +1,197 @@
+
+enum JobFrequencyEnum {
+   ONCE, MINUETLY, HOURLY, WEEKLY, WEEKDAYS, DAILY, MONTHLY, ANNUALLY
+}
+
+entity HolidayCalendar {
+  name String
+  description String
+  vendorId Long
+  vendorSubId Long
+}
+
+// do we prefer Job or Task?
+// question what Airflow uses
+
+relationship ManyToOne {
+   HolidayCalendar{jobDefinition} to JobFrequency
+}
+
+
+entity JobFrequency {
+   name String
+   description String
+   jobFrequencyEnum JobFrequencyEnum
+}
+
+entity JobSchedule {
+   name String
+   description String
+   startTime Instant
+   endTime Instant
+}
+
+relationship ManyToOne {
+  JobSchedule{jobFrequency} to JobFrequency
+}
+
+
+enum JobTypeEnum {
+   MANUAL, AGENT_EXECUTION, FTP, DATA_COPY, EMAIL, SMS, REST, SOAP, JDBC, SSH
+}
+
+enum AgentTypeEnum {
+   LINUX, WINDOWS, ZOS, REMOTE_FILE_MONITOR, TIMER
+}
+
+enum AgentStatusEnum {
+   NOT_REGISTERED, REGISTERED, CONNECTED, DISCONNECTED, BUSY
+}
+
+// TODO:  Does everythig have last updated user, last updated time?  (in jHipster)
+// answer:  Yes, you turn on "auditing" when you run jHipster
+entity AgentGroup {
+  name String
+}
+
+entity Agent {
+  agentName String
+  agentDescription String
+  agentId String
+
+  // basic info
+  hostName String
+  ipAddress String
+  port Integer
+
+  // need secure connection details, pkey string?
+  areCredentialsRequired Boolean
+  privateKey String // preferred
+  username String
+  // this should not be used, but if so, hashed by batchDoctor with our own seed etc.
+  passwordEncrypted String
+  heartbeatInterval Integer
+  heartbeatGracePeriod Integer
+  isNumberOfConcurrentTasksLimited Boolean
+  numberOfConcurrentTasksLimit Long // 0 means unlimited?
+  agentType AgentTypeEnum
+  agentStatus AgentStatusEnum
+  agentSuspended Boolean
+  showLogsProhibited Boolean
+
+  // metadata about the agent box and agent build
+  agentVersion String
+  agentBuildId String
+  agentBuildDate String
+  agentCpu String
+  operatingSystemRelease String
+  operatingSystem String
+
+  // metadata about the agent
+  agentStartTime Instant
+  agentProcessId Long
+  lastHeartbeatSuccess Instant
+  lastHeartbeatMissed Instant
+  numberOfJobsEverRun Long
+  numberOfJobsRunning Long
+
+  // other meta-data
+  // country Country
+  // region Region
+  businessUnit String
+}
+
+enum TransferProtocolEnum {
+   SCP, SFTP, FTP, BATCH_DOCTOR, S3
+}
+
+entity JobDefinition {
+   jobName String
+   jobDescription String
+   jobType JobTypeEnum
+   // file transfer tasks stuff
+   timeZonePreference String
+   atMostOnce Boolean
+   documentationUrl String
+   ticketUrl String
+   ticketNumber String
+   transferProtocol TransferProtocolEnum
+   remoteHost String
+   remotePort Integer
+   remotePath String
+   localPath String
+   localUsername String
+   localPassword String
+   localCloudUser String // amazon IAM
+   localCloudCredential String // amazon IAM password?
+
+   // retries of jobs
+   maxRetries Integer
+   retryIntervalSeconds Integer
+}
+
+
+relationship ManyToOne {
+  JobDefinition{agentGroup} to AgentGroup
+}
+
+relationship ManyToOne {
+  JobDefinition{agent} to Agent
+}
+
+enum JobExecutionStatus {
+   QUEUED, NOT_QUEUED, READY, STARTING, RUNNING, RUNNING_OVERTIME, FAILED, SUCCESS
+}
+
+entity JobExecution {
+   jobExecutionStatus JobExecutionStatus
+   jobExecutionStatusUpdateTime Instant
+   startTime Instant
+   endTime Instant
+   updatedTime Instant
+   // two logs, the stdout and stderr
+   logS3OutputPath String
+   logS3ErrorFilePath String
+   // users can also have their own log file output, attached with some pattern
+   alternateS3OutputPath String
+}
+
+relationship ManyToOne {
+   JobExecution{jobDefinition} to JobDefinition
+}
+
+relationship ManyToOne {
+   Agent{jobDefinition} to JobDefinition
+}
+
+relationship ManyToOne {
+   AgentGroup{jobDefinition} to JobDefinition
+}
+
+entity Region {
+	regionName String
+}
+
+entity Country {
+	countryName String
+}
+
+relationship OneToOne {
+	Country{region} to Region
+}
+
+//relationship OneToOne {
+//	Location{country} to Country
+//}
+
+// Set pagination options
+paginate JobExecution, Agent, JobDefinition with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

@@ -45,6 +45,15 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
+            createCache(cm, com.batchdoctor.domain.HolidayCalendar.class.getName());
+            createCache(cm, com.batchdoctor.domain.JobFrequency.class.getName());
+            createCache(cm, com.batchdoctor.domain.JobSchedule.class.getName());
+            createCache(cm, com.batchdoctor.domain.AgentGroup.class.getName());
+            createCache(cm, com.batchdoctor.domain.Agent.class.getName());
+            createCache(cm, com.batchdoctor.domain.JobDefinition.class.getName());
+            createCache(cm, com.batchdoctor.domain.JobExecution.class.getName());
+            createCache(cm, com.batchdoctor.domain.Region.class.getName());
+            createCache(cm, com.batchdoctor.domain.Country.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }
